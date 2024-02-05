@@ -4,18 +4,18 @@ const cors = require('cors');
 const app = express();
 const mimeTypes = require('mime-types');
 const multer = require('multer');
+const validImage = require('./middlewares/validImage');
 
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('./assets', express.static('./assets'));
-const port = 9876;
+const port = 7645;
 
 const storageFile = multer.diskStorage({
     destination: './assets/',
     filename: (req, file, cb) => {
-        console.log(file);
-        cb('', `imageFile${Date.now()}.${mimeTypes.extension(file.mimetype)}`);
+        cb(null, `imageFile${Date.now()}.${mimeTypes.extension(file.mimetype)}`);
     }
 });
 
