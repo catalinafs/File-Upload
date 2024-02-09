@@ -97,24 +97,21 @@ const Upload = () => {
         const Form = new FormData();
         Form.append('imageFile', form.imageFile);
 
+        setLoading(true);
         try {
             const response = await axios.post('http://localhost:7645/file', Form);
-
-            // ! eliminar
-            console.log(response.data.msg);
 
             return Toast({
                 text: response.data.msg,
                 icon: 'success',
             });
         } catch (error) {
-            // ! eliminar
-            console.log(error);
-
             return Toast({
                 text: error,
                 icon: 'error',
             });
+        } finally {
+            setLoading(false);
         }
     };
 
