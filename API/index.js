@@ -4,7 +4,6 @@ const cors = require('cors');
 const app = express();
 const mimeTypes = require('mime-types');
 const multer = require('multer');
-const validImage = require('./middlewares/validImage');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -16,7 +15,7 @@ const storageFile = multer.diskStorage({
     destination: './assets/',
     filename: (req, file, cb) => {
         cb(null, `imageFile${Date.now()}.${mimeTypes.extension(file.mimetype)}`);
-    }
+    },
 });
 
 const uploadFile = multer({
@@ -24,10 +23,10 @@ const uploadFile = multer({
 });
 
 app.post('/file', uploadFile.single('imageFile'), (req, res) => {
-    console.log(req.file)
+
     res.status(200).json({
         msg: 'El archivo se agrego correctamente',
-        urlFile: `https://localhost:${port}/assets/${req.file.filename}`
+        urlFile: `https://localhost:${port}/assets/${req?.file?.filename}`
     });
 });
 

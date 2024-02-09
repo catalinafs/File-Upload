@@ -13,6 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 // Colors, Imgs, Icons, etc.
 import colors from '../utils/colors';
 import axios from 'axios';
+import Toast from '../components/ui/Toast';
 
 const fileMaxSize = 500 * 1024;
 
@@ -73,22 +74,6 @@ const Upload = () => {
         }
     }
 
-    const convertBlobToBase64 = (blob) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onload = (event) => {
-                resolve(event?.target?.result);
-            };
-
-            reader.onerror = (error) => {
-                reject(error);
-            };
-
-            reader.readAsDataURL(blob);
-        });
-    };
-
     const handleClick = async (event) => {
         event.preventDefault();
 
@@ -109,11 +94,28 @@ const Upload = () => {
             return;
         }
 
-        const imageBase64 = await convertBlobToBase64(form.imageFile);
+        const Form = new FormData();
+        Form.append('imageFile', form.imageFile);
 
-        console.log(imageBase64)
-        // ! hacer peticion con la imagen convertida
-        // const response = await axios.post('http://localhost:7645/file', imageBase64);
+        try {
+            const response = await axios.post('http://localhost:7645/file', Form);
+
+            // ! eliminar
+            console.log(response.data.msg);
+
+            return Toast({
+                text: response.data.msg,
+                icon: 'success',
+            });
+        } catch (error) {
+            // ! eliminar
+            console.log(error);
+
+            return Toast({
+                text: error,
+                icon: 'error',
+            });
+        }
     };
 
     return (
@@ -127,10 +129,6 @@ const Upload = () => {
                     action="http://localhost:7645/file"
                     method="post"
                 >
-                    {/* //! aqui es para hacer el drag an drop */}
-                    {/* <Stack>
-                    </Stack> */}
-
                     {
                         image ? (
                             <Stack
@@ -151,6 +149,7 @@ const Upload = () => {
                                 >
                                     <RestartAltIcon sx={{ color: colors.text }} />
                                 </IconButton>
+
                                 <img src={image} alt="user image" width='100%' height='100%' />
                             </Stack>
                         ) : (

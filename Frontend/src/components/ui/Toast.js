@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
  *
  * @example
  *
- * useToast({
+ * Toast({
  *   text: 'Contraseña Incorrecta',
  *   icon: 'error',
  *   styles: {
@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
  *
 **/
 
-const useToast = ({ text, icon, styles }) => {
+const Toast = ({ text, icon, styles }) => {
     Swal.fire({
         toast: true,
         titleText: text,
@@ -39,4 +39,4 @@ const useToast = ({ text, icon, styles }) => {
     });
 }
 
-export default useToast;
+export default Toast;
